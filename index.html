@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="th" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hematology Insight — ความรู้เรื่องเลือด</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-red: #D90429;
+      --secondary-red: #EF233C;
+      --light-bg: #FFFFFF;
+      --surface-bg: #FAFAFA;
+      --text-main: #1A1A1A;
+      --text-muted: #666666;
+      --border-color: #EEEEEE;
+    }
+
+    * { font-family: 'Prompt', sans-serif; }
+    html, body { height: 100%; margin: 0; background-color: var(--light-bg); color: var(--text-main); scroll-behavior: smooth; }
+
+    @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    .fade-in { animation: fadeInScale 0.6s ease-out both; }
+    .slide-up { animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+    .float { animation: float 4s ease-in-out infinite; }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(217, 4, 41, 0.08);
+      border-color: var(--primary-red);
+    }
+
+    .premium-btn {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .premium-btn::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+    .premium-btn:hover::after { left: 100%; }
+
+    .tab-btn {
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s;
+    }
+    .tab-btn.active {
+      color: var(--primary-red);
+      border-bottom-color: var(--primary-red);
+      background: rgba(217, 4, 41, 0.05);
+    }
+
+    .blood-bg-element {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(217, 4, 41, 0.05) 0%, transparent 70%);
+      z-index: -1;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--surface-bg); }
+    ::-webkit-scrollbar-thumb { background: var(--primary-red); border-radius: 10px; }
+  </style>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full overflow-auto selection:bg-red-100 selection:text-red-900">
+   
+   <!-- Hero Section -->
+   <section class="relative w-full flex items-center justify-center overflow-hidden py-32 px-6">
+    <div class="blood-bg-element" style="width: 600px; height: 600px; top: -200px; left: -200px;"></div>
+    <div class="blood-bg-element" style="width: 400px; height: 400px; bottom: -100px; right: -50px;"></div>
+    
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+     <div class="float inline-block mb-8">
+      <i class="fa-solid fa-droplet text-6xl text-red-600 drop-shadow-lg"></i>
+     </div>
+     <h1 id="site-title" class="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-6 slide-up">
+      Hematology <span class="text-red-600">Insight</span>
+     </h1>
+     <p id="hero-subtitle" class="text-lg md:text-xl text-gray-500 font-light max-w-2xl mx-auto mb-10 slide-up" style="animation-delay: 0.2s;">
+      ความรู้วิทยาศาสตร์เกี่ยวกับระบบเลือดในร่างกายมนุษย์ เจาะลึกส่วนประกอบ หมู่เลือด และความสำคัญของการบริจาคเพื่อช่วยชีวิต
+     </p>
+     <div class="flex flex-wrap justify-center gap-4 slide-up" style="animation-delay: 0.4s;">
+      <a href="#components" class="premium-btn bg-red-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg shadow-red-200 hover:bg-red-700">
+       เริ่มสำรวจข้อมูล <i class="fa-solid fa-chevron-down ml-2 text-sm"></i>
+      </a>
+      <a href="#donation" class="premium-btn bg-white text-red-600 border border-red-100 px-8 py-4 rounded-full font-semibold hover:bg-red-50">
+       บริจาคโลหิตช่วยชีวิต
+      </a>
+     </div>
+    </div>
+   </section>
+
+   <!-- Stats -->
+   <section class="w-full border-y border-gray-100 bg-gray-50/50">
+    <div class="max-w-6xl mx-auto py-12 px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+     <div class="text-center group">
+      <div class="text-4xl font-bold text-gray-900 group-hover:text-red-600 transition-colors">5 Liters</div>
+      <div class="text-sm text-gray-400 font-medium tracking-wide uppercase mt-1">Total Volume</div>
+     </div>
+     <div class="text-center group">
+      <div class="text-4xl font-bold text-gray-900 group-hover:text-red-600 transition-colors">4 Groups</div>
+      <div class="text-sm text-gray-400 font-medium tracking-wide uppercase mt-1">Main Blood Types</div>
+     </div>
+     <div class="text-center group">
+      <div class="text-4xl font-bold text-gray-900 group-hover:text-red-600 transition-colors">120 Days</div>
+      <div class="text-sm text-gray-400 font-medium tracking-wide uppercase mt-1">RBC Lifespan</div>
+     </div>
+     <div class="text-center group">
+      <div class="text-4xl font-bold text-gray-900 group-hover:text-red-600 transition-colors">100k KM</div>
+      <div class="text-sm text-gray-400 font-medium tracking-wide uppercase mt-1">Vessel Length</div>
+     </div>
+    </div>
+   </section>
+
+   <!-- Components Grid -->
+   <section id="components" class="py-24 px-6 bg-white">
+    <div class="max-w-6xl mx-auto">
+     <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      <div class="max-w-xl">
+       <span class="text-red-600 font-bold tracking-widest uppercase text-sm">Vital Elements</span>
+       <h2 class="text-4xl font-bold text-gray-900 mt-2">ส่วนประกอบหลักของเลือด</h2>
+       <p class="text-gray-500 mt-4">เลือดไม่ใช่น้ำสีแดงธรรมดา แต่คือเนื้อเยื่อที่มีความซับซ้อนสูง ประกอบด้วยเซลล์และพลาสมาที่ทำงานประสานกัน</p>
+      </div>
+     </div>
+
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Plasma -->
+      <div class="glass-card rounded-3xl p-8">
+       <div class="w-14 h-14 bg-yellow-50 rounded-2xl flex items-center justify-center mb-6">
+        <i class="fa-solid fa-flask text-yellow-500 text-2xl"></i>
+       </div>
+       <h3 class="text-xl font-bold text-gray-900 mb-3">พลาสมา (Plasma)</h3>
+       <p class="text-sm text-gray-500 leading-relaxed mb-6">ของเหลวสีเหลืองอ่อนที่เป็นตัวกลางลำเลียงสารอาหาร ฮอร์โมน และของเสีย</p>
+       <div class="flex items-center gap-2">
+        <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+         <div class="h-full bg-yellow-400" style="width: 55%"></div>
+        </div>
+        <span class="text-xs font-bold text-yellow-600">55%</span>
+       </div>
+      </div>
+
+      <!-- RBC -->
+      <div class="glass-card rounded-3xl p-8 border-red-50">
+       <div class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center mb-6">
+        <i class="fa-solid fa-circle-dot text-red-600 text-2xl"></i>
+       </div>
+       <h3 class="text-xl font-bold text-gray-900 mb-3">เม็ดเลือดแดง (RBC)</h3>
+       <p class="text-sm text-gray-500 leading-relaxed mb-6">ขนส่งออกซิเจนผ่านฮีโมโกลบิน มีรูปร่างเพื่อการแลกเปลี่ยนก๊าซที่เหมาะสม</p>
+       <div class="flex items-center gap-2">
+        <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+         <div class="h-full bg-red-600" style="width: 45%"></div>
+        </div>
+        <span class="text-xs font-bold text-red-600">45%</span>
+       </div>
+      </div>
+
+      <!-- WBC -->
+      <div class="glass-card rounded-3xl p-8">
+       <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6">
+        <i class="fa-solid fa-shield-halved text-blue-500 text-2xl"></i>
+       </div>
+       <h3 class="text-xl font-bold text-gray-900 mb-3">เม็ดเลือดขาว (WBC)</h3>
+       <p class="text-sm text-gray-500 leading-relaxed mb-6">ทหารของร่างกาย คอยตรวจจับและทำลายเชื้อโรครวมถึงสิ่งแปลกปลอม</p>
+       <div class="flex items-center gap-2">
+        <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+         <div class="h-full bg-blue-500" style="width: 1%"></div>
+        </div>
+        <span class="text-xs font-bold text-blue-600">~1%</span>
+       </div>
+      </div>
+
+      <!-- Platelets -->
+      <div class="glass-card rounded-3xl p-8">
+       <div class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center mb-6">
+        <i class="fa-solid fa-microchip text-purple-500 text-2xl"></i>
+       </div>
+       <h3 class="text-xl font-bold text-gray-900 mb-3">เกล็ดเลือด</h3>
+       <p class="text-sm text-gray-500 leading-relaxed mb-6">ชิ้นส่วนเซลล์ที่ช่วยในการแข็งตัวของเลือดเมื่อเกิดบาดแผล เพื่อห้ามเลือด</p>
+       <div class="flex items-center gap-2">
+        <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+         <div class="h-full bg-purple-500" style="width: 1%"></div>
+        </div>
+        <span class="text-xs font-bold text-purple-600">~1%</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+
+   <!-- Blood Types Content -->
+   <section class="py-24 px-6 bg-gray-50/50">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold text-gray-900">หมู่เลือด ABO และความเข้ากันได้</h2>
+      <p class="text-gray-500 mt-4">การรู้หมู่เลือดมีความสำคัญอย่างยิ่งต่อการรักษาและการบริจาค</p>
+     </div>
+
+     <div class="bg-white rounded-[2rem] border border-gray-100 shadow-xl overflow-hidden">
+      <div class="flex border-b border-gray-100 overflow-x-auto" id="blood-tabs">
+       <button onclick="showBloodType('A')" class="tab-btn px-8 py-5 flex-1 font-bold text-gray-400 whitespace-nowrap active" data-type="A">Group A</button>
+       <button onclick="showBloodType('B')" class="tab-btn px-8 py-5 flex-1 font-bold text-gray-400 whitespace-nowrap" data-type="B">Group B</button>
+       <button onclick="showBloodType('AB')" class="tab-btn px-8 py-5 flex-1 font-bold text-gray-400 whitespace-nowrap" data-type="AB">Group AB</button>
+       <button onclick="showBloodType('O')" class="tab-btn px-8 py-5 flex-1 font-bold text-gray-400 whitespace-nowrap" data-type="O">Group O</button>
+      </div>
+      <div id="blood-info" class="p-10 min-h-[300px] flex items-center">
+       <!-- Dynamic Content -->
+      </div>
+     </div>
+    </div>
+   </section>
+
+   <!-- Donation Info -->
+   <section id="donation" class="py-24 px-6 bg-white relative overflow-hidden">
+    <div class="max-w-6xl mx-auto">
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="col-span-1 md:col-span-1">
+       <h2 class="text-4xl font-bold text-gray-900 leading-tight">ร่วมเป็น <br><span class="text-red-600">ผู้ให้</span> ที่ยิ่งใหญ่</h2>
+       <p class="text-gray-500 mt-6 mb-8">การบริจาคโลหิตเป็นวิธีที่ง่ายและปลอดภัยที่สุดในการช่วยชีวิตเพื่อนมนุษย์</p>
+       <div class="p-6 rounded-3xl bg-red-50 border border-red-100">
+        <p class="text-red-900 font-bold mb-2">Did you know?</p>
+        <p class="text-red-700 text-sm">การบริจาคหนึ่งครั้งสามารถนำไปแยกเป็นส่วนประกอบช่วยเหลือได้ถึง 3 ชีวิต</p>
+       </div>
+      </div>
+      
+      <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+       <div class="p-8 rounded-3xl border border-gray-100 hover:border-red-600 transition-all">
+        <i class="fa-solid fa-clipboard-check text-red-600 text-2xl mb-4"></i>
+        <h4 class="font-bold text-lg mb-2">คุณสมบัติ</h4>
+        <ul class="text-sm text-gray-500 space-y-2">
+         <li>• อายุ 17-70 ปี</li>
+         <li>• น้ำหนัก 45 กก. ขึ้นไป</li>
+         <li>• นอนหลับพักผ่อนเพียงพอ</li>
+        </ul>
+       </div>
+       <div class="p-8 rounded-3xl border border-gray-100 hover:border-red-600 transition-all">
+        <i class="fa-solid fa-heart-pulse text-red-600 text-2xl mb-4"></i>
+        <h4 class="font-bold text-lg mb-2">ประโยชน์ต่อตัวคุณ</h4>
+        <ul class="text-sm text-gray-500 space-y-2">
+         <li>• กระตุ้นการสร้างเม็ดเลือดใหม่</li>
+         <li>• ผิวพรรณเปล่งประกาย</li>
+         <li>• ตรวจสุขภาพเบื้องต้น</li>
+        </ul>
+       </div>
+       <div class="p-8 rounded-3xl border border-gray-100 hover:border-red-600 transition-all">
+        <i class="fa-solid fa-clock text-red-600 text-2xl mb-4"></i>
+        <h4 class="font-bold text-lg mb-2">ความถี่</h4>
+        <ul class="text-sm text-gray-500 space-y-2">
+         <li>• บริจาคได้ทุกๆ 3 เดือน</li>
+         <li>• ใช้เวลาเพียง 15-20 นาที</li>
+        </ul>
+       </div>
+       <div class="p-8 rounded-3xl border border-gray-100 hover:border-red-600 transition-all">
+        <i class="fa-solid fa-kit-medical text-red-600 text-2xl mb-4"></i>
+        <h4 class="font-bold text-lg mb-2">ก่อนบริจาค</h4>
+        <ul class="text-sm text-gray-500 space-y-2">
+         <li>• ดื่มน้ำ 3-4 แก้ว</li>
+         <li>• งดอาหารที่มีไขมันสูง</li>
+        </ul>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+
+   <!-- Fun Facts -->
+   <section class="py-24 px-6 bg-gray-900 text-white">
+    <div class="max-w-4xl mx-auto">
+     <h2 class="text-3xl font-bold mb-12 flex items-center gap-4">
+      <span class="w-12 h-1 bg-red-600"></span> 💡 Insight Facts
+     </h2>
+     <div class="grid gap-4" id="facts-list"></div>
+    </div>
+   </section>
+
+   <footer class="bg-white py-12 px-6 border-t border-gray-100">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+     <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
+       <i class="fa-solid fa-droplet text-white text-xs"></i>
+      </div>
+      <span class="font-bold text-lg">Hematology <span class="text-red-600">Insight</span></span>
+     </div>
+     <p class="text-sm text-gray-400">© 2024 Educational Resource. All rights reserved.</p>
+     <div class="flex gap-4">
+      <i class="fa-brands fa-facebook text-gray-400 hover:text-red-600 cursor-pointer transition-colors"></i>
+      <i class="fa-brands fa-twitter text-gray-400 hover:text-red-600 cursor-pointer transition-colors"></i>
+      <i class="fa-brands fa-instagram text-gray-400 hover:text-red-600 cursor-pointer transition-colors"></i>
+     </div>
+    </div>
+   </footer>
+  </div>
+
+  <script>
+   const bloodData = {
+     A: {
+       desc: 'มีแอนติเจน A (Antigen A) และแอนติบอดี B (Antibody B)',
+       give: 'A, AB',
+       receive: 'A, O',
+       icon: 'fa-vial'
+     },
+     B: {
+       desc: 'มีแอนติเจน B (Antigen B) และแอนติบอดี A (Antibody A)',
+       give: 'B, AB',
+       receive: 'B, O',
+       icon: 'fa-vial'
+     },
+     AB: {
+       desc: 'มีทั้งแอนติเจน A และ B แต่ไม่มีแอนติบอดี (Universal Recipient)',
+       give: 'AB Only',
+       receive: 'All Types',
+       icon: 'fa-hand-holding-medical'
+     },
+     O: {
+       desc: 'ไม่มีแอนติเจนทั้ง A และ B แต่มีแอนติบอดีทั้ง A และ B (Universal Donor)',
+       give: 'All Types',
+       receive: 'O Only',
+       icon: 'fa-syringe'
+     }
+   };
+
+   function showBloodType(type) {
+     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+     document.querySelector(`[data-type="${type}"]`).classList.add('active');
+     
+     const data = bloodData[type];
+     const container = document.getElementById('blood-info');
+     container.className = 'p-10 min-h-[300px] flex items-center fade-in';
+     
+     container.innerHTML = `
+      <div class="flex flex-col md:flex-row gap-12 w-full">
+       <div class="w-32 h-32 bg-red-50 rounded-full flex items-center justify-center shrink-0 mx-auto md:mx-0">
+        <span class="text-5xl font-black text-red-600">${type}</span>
+       </div>
+       <div class="flex-1">
+        <h4 class="text-2xl font-bold mb-4">ข้อมูลหมู่เลือด ${type}</h4>
+        <p class="text-gray-500 mb-8">${data.desc}</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+         <div class="p-4 bg-gray-50 rounded-2xl">
+          <span class="text-xs uppercase font-bold text-gray-400 tracking-wider">ให้เลือดแก่</span>
+          <div class="text-lg font-bold text-gray-900 mt-1">${data.give}</div>
+         </div>
+         <div class="p-4 bg-gray-50 rounded-2xl">
+          <span class="text-xs uppercase font-bold text-gray-400 tracking-wider">รับเลือดจาก</span>
+          <div class="text-lg font-bold text-gray-900 mt-1">${data.receive}</div>
+         </div>
+        </div>
+       </div>
+      </div>
+     `;
+   }
+
+   const facts = [
+     { icon: 'fa-bolt', text: 'เลือดใช้เวลาเพียง 20 วินาที ในการไหลเวียนครบรอบร่างกาย' },
+     { icon: 'fa-baby', text: 'ทารกแรกเกิดมีเลือดเพียง 1 ถ้วยตวง (~250 มล.) เท่านั้น' },
+     { icon: 'fa-heart-pulse', text: 'หัวใจสูบฉีดเลือดประมาณ 7,500 ลิตรต่อวัน' },
+     { icon: 'fa-gem', text: 'ในเลือดมีแร่ธาตุทองคำเล็กน้อย ประมาณ 0.2 มิลลิกรัม' },
+     { icon: 'fa-droplet', text: 'เม็ดเลือดแดง 1 เซลล์ มีฮีโมโกลบินถึง 270 ล้านโมเลกุล' }
+   ];
+
+   const factsList = document.getElementById('facts-list');
+   facts.forEach(f => {
+     const div = document.createElement('div');
+     div.className = 'flex items-center gap-6 p-6 rounded-2xl border border-gray-800 hover:border-red-600 transition-colors group';
+     div.innerHTML = `
+      <div class="w-12 h-12 rounded-xl bg-gray-800 flex items-center justify-center shrink-0 group-hover:bg-red-600 transition-colors">
+       <i class="fa-solid ${f.icon} text-white text-xl"></i>
+      </div>
+      <p class="text-gray-300 font-medium">${f.text}</p>
+     `;
+     factsList.appendChild(div);
+   });
+
+   // Handle Element SDK
+   const defaultConfig = {
+     site_title: 'Hematology Insight',
+     hero_subtitle: 'ความรู้วิทยาศาสตร์เกี่ยวกับระบบเลือดในร่างกายมนุษย์ เจาะลึกส่วนประกอบ หมู่เลือด และความสำคัญของการบริจาคเพื่อช่วยชีวิต',
+     primary_color: '#D90429'
+   };
+
+   async function applyConfig(config) {
+     const c = { ...defaultConfig, ...config };
+     document.getElementById('site-title').innerHTML = c.site_title.replace('Insight', '<span class="text-red-600">Insight</span>');
+     document.getElementById('hero-subtitle').textContent = c.hero_subtitle;
+     if (c.primary_color) {
+       document.documentElement.style.setProperty('--primary-red', c.primary_color);
+     }
+   }
+
+   window.elementSdk.init({
+     defaultConfig,
+     onConfigChange: applyConfig,
+     mapToCapabilities: (config) => ({
+       recolorables: [
+         { get: () => config.primary_color || defaultConfig.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); }}
+       ]
+     }),
+     mapToEditPanelValues: (config) => new Map([
+       ['site_title', config.site_title || defaultConfig.site_title],
+       ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle]
+     ])
+   });
+
+   // Init
+   showBloodType('A');
+  </script>
+ </body>
+</html>
